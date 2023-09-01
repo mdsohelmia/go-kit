@@ -1,3 +1,5 @@
+// Author: Md Sohel Mia
+
 package response
 
 import "github.com/gin-gonic/gin"
@@ -9,6 +11,7 @@ type ParamsWithSuccess struct {
 	Meta       any    `json:"meta,omitempty"`
 	Success    bool   `json:"success"`
 }
+
 type ParamsWithError struct {
 	StatusCode int    `json:"status"`
 	Message    string `json:"message"`
