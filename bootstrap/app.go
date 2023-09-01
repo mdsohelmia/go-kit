@@ -49,8 +49,8 @@ func (a *App) AddCommands(cmds ...command.Command) {
 				ctx := context.Background()
 				app := fx.New(
 					fx.Options(a.options...),
-					fx.Invoke(cmd.Run(c, args)),
 					fx.NopLogger,
+					fx.Invoke(cmd.Run(c, args)),
 				)
 				err := app.Start(ctx)
 				if err != nil {

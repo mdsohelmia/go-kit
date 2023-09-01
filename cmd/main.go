@@ -6,7 +6,8 @@ import (
 	"github.com/mdsohelmia/go-kit/bootstrap"
 	"github.com/mdsohelmia/go-kit/cmd/migrate"
 	"github.com/mdsohelmia/go-kit/config"
-	"github.com/mdsohelmia/go-kit/internal/pkg/route"
+	"github.com/mdsohelmia/go-kit/internal/pkg/database"
+	"github.com/mdsohelmia/go-kit/internal/pkg/router"
 )
 
 func main() {
@@ -16,9 +17,9 @@ func main() {
 	// register modules here
 	app.Module(
 		config.Module,
-		route.Module,
+		router.Module,
+		database.Module,
 	)
-
 	if err := app.Execute(); err != nil {
 		os.Stderr.WriteString(err.Error())
 		os.Exit(1)

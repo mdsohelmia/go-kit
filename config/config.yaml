@@ -1,0 +1,120 @@
+env: development
+
+app:
+  name: "go-kit"
+  version: 1.0.0
+  port: 8080
+  host: localhost
+
+log:
+  level: debug
+  format: json
+  output: stdout
+  file: logs/app.log
+  max_size: 100
+  max_age: 7
+  max_backups: 10
+  compress: true
+
+database:
+  backend:
+    driver: tidb
+    mysql:
+      host: localhost
+      port: 3306
+      user: root
+      password: root
+      database: go_kit
+      charset: utf8mb4
+      parseTime: true
+      loc: Local
+      max_connections: 100
+      max_idle_connections: 10
+      max_idle_time: 10
+      migration_path: migrations/mysql
+
+    tidb:
+      host: localhost
+      port: 4000
+      user: root
+      password: tidbrootpass
+      database: go_kit
+      charset: utf8mb4
+      parseTime: true
+      loc: Local
+      max_connections: 100
+      max_idle_connections: 10
+      max_idle_time: 10
+      migration_path: migrations/mysql
+
+  analytics:
+    driver: clickhouse
+    clickhouse:
+      host: localhost
+      port: 9000
+      user: default
+      password: ""
+      database: go_kit
+      read_timeout: 10
+      write_timeout: 20
+      max_connections: 100
+      max_idle_connections: 10
+      max_idle_time: 10
+      migration_path: migrations/clickhouse
+
+  key_value:
+    driver: redis
+    redis:
+      addr: localhost:6379
+      password: ""
+      db: 0
+cache:
+  driver: redis
+  key_prefix: go_kit_cache_
+  redis:
+    addr: localhost:6379
+    password: ""
+    db: 0
+worker:
+  driver: redis
+  queues:
+    critical: 1
+    default: 5
+    low: 10
+  redis:
+    addr: localhost:6379
+    password: ""
+    db: 0
+services:
+  sms:
+    driver: aliyun
+    aliyun:
+      access_key_id: ""
+      access_key_secret: ""
+  # email service
+  email:
+    driver: smtp
+    smtp:
+      host: smtp.gmail.com
+      port: 587
+      username: ""
+      password: ""
+      from: ""
+      from_name: ""
+      reply_to: ""
+      reply_to_name: ""
+      use_ssl: false
+      use_tls: true
+      skip_verify: false
+      keep_alive: false
+      timeout: 10
+  # oauth google & facebook service
+  oauth:
+    google:
+      client_id: ""
+      client_secret: ""
+      redirect_url: ""
+    facebook:
+      client_id: ""
+      client_secret: ""
+      redirect_url: ""

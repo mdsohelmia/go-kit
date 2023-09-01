@@ -9,15 +9,20 @@ import (
 	"go.uber.org/fx"
 )
 
-func NewServer() *gin.Engine {
+// Router is an alias for gin.Engine
+type Router = gin.Engine
+
+func NewRouter() *Router {
 	router := gin.New()
+	router.Use(gin.Recovery())
+	router.SetTrustedProxies(nil)
 	return router
 }
 
 func main() {
 
 	app := fx.New(
-		fx.Provide(NewServer),
+		fx.Provide(NewRouter),
 		// Regiter http routes here
 		fx.Provide(NewUserRouter),
 		fx.Provide(NewAdminRouter),
@@ -28,7 +33,11 @@ func main() {
 		fx.Invoke(registerHooks),
 	)
 
-	app.Run()
+	ctx := context.Background()
+
+	app.Start(ctx)
+
+	defer app.Stop(ctx)
 
 }
 
@@ -122,7 +131,7 @@ type Route interface {
 }
 
 type UserRouter struct {
-	router *gin.Engine
+	router *Router
 }
 
 func NewUserRouter(router *gin.Engine) *UserRouter {
@@ -141,7 +150,7 @@ func (u *UserRouter) Register() {
 }
 
 type AdminRouter struct {
-	router *gin.Engine
+	router *Router
 }
 
 func NewAdminRouter(router *gin.Engine) *AdminRouter {
